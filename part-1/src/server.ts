@@ -1,47 +1,16 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import cluster from 'cluster';
-import os from 'os';
 import routes from './routes';
 
+import workers from './workers';
+
 const PORT = 3333;
-const HOST = '0.0.0.0';
+const HOST = 'localhost';
 
 const app = express();
-let workers: cluster.Worker[] = [];
-
-/**
- * Setup number of worker processes to share port which will be defined while setting up server
- */
-const setupWorkerProcesses = () => {
-  const numCores = os.cpus().length;
-  console.log(`Master cluster setting up ${numCores} workers`);
-
-  for (let i = 0; i < numCores; i += 1) {
-    workers.push(cluster.fork());
-
-    workers[i].on('message', message => {
-      console.log(message);
-    });
-  }
-
-  cluster.on('online', worker => {
-    console.log(`Worker ${worker.process.pid} is listening`);
-  });
-
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(
-      `Worker  ${worker.process.pid} died with code:  ${code} , and signal: ${signal}`,
-    );
-    console.log('Starting a new worker');
-    cluster.fork();
-    workers.push(cluster.fork());
-    workers[workers.length - 1].on('message', message => {
-      console.log(message);
-    });
-  });
-};
 
 const setupExpress = () => {
   app.use(cors());
@@ -59,12 +28,17 @@ const setupExpress = () => {
   });
 };
 
-const setupServer = (isClusterRequired: boolean) => {
-  if (isClusterRequired && cluster.isMaster) {
-    setupWorkerProcesses();
-  } else {
-    setupExpress();
-  }
-};
+// THIS IS NOT THE BETTER WAY TO CLUSTER A NODE SERVER.
+// OTHER OPTIONS ARE MORE VIABLE, SUCH AS IPTABLE OR NGINX.
+// WHY DID I NOT USE IPTABLE? IT HAS TO BE CONFIGURED MANUALLY.
+// TODO - ENHANCEMENT => APPLY NGINX
 
-setupServer(true);
+// This can be setted as environment variable
+const isClusterRequired: boolean | string =
+  process.env.CLUSTER_REQUIRED || false;
+
+if (cluster.isMaster) {
+  workers.setup(isClusterRequired);
+} else {
+  setupExpress();
+}
