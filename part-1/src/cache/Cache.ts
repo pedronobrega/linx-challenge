@@ -6,7 +6,7 @@ class Cache {
   constructor() {
     const options: RedisOptions = {
       port: (process.env.REDIS_PORT && +process.env.REDIS_PORT) || 6379,
-      host: process.env.REDIS_HOST || 'localhost',
+      host: process.env.REDIS_HOST || 'redis',
       keyPrefix: 'node_cache:',
     };
     this.redis = new Redis(options);

@@ -4,10 +4,10 @@ import productRoutes from './product.routes';
 const routes = Router();
 
 routes.use('/products', productRoutes);
-routes.get('/', (req: Request, res: Response) => {
+routes.get('/ping', (req: Request, res: Response) => {
   const message = `Worker ${process.pid}`;
   console.log(message);
-  res.end(message);
+  res.end('pong');
 });
 
 export default routes;
