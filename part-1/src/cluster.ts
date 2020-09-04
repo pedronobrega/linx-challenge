@@ -31,7 +31,7 @@ class Cluster {
     console.log(`Master cluster setting up ${numCores} workers`);
 
     for (let i = 0; i < numCores; i += 1) {
-      workers.push(cluster.fork({ id: i }));
+      workers.push(cluster.fork());
     }
   };
 }
