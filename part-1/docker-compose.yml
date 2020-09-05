@@ -2,25 +2,38 @@ version: '3.1'
 
 services:
 
+  postgres:
+    image: 'postgres'
+    container_name: 'pedronobrega-postgres'
+    restart: 'always'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: 'docker'
+      POSTGRES_USER: 'docker'
+      POSTGRES_PASSWORD: 'docker'
+
   redis:
     image: 'redis'
-    container_name: 'redis'
+    container_name: 'pedronobrega-redis'
     restart: 'always'
     ports:
       - '6379:6379'
 
   node:
     image: 'node-balanced'
+    container_name: 'pedronobrega-node'
     restart: 'always'
     ports:
       - '8080:8080'
     links:
+      - 'postgres'
       - 'redis'
 
   nginx:
-    image: nginx-balancer
-    container_name: 'nginx'
+    image: 'nginx-balancer'
+    container_name: 'pedronobrega-nginx'
     ports:
-      - "80:80"
+      - '80:80'
     links:
-      - node
+      - 'node'

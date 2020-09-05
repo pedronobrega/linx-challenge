@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { isArray } from 'util';
 import Cache from '../cache/Cache';
+import ProductService from '../services/Product.service';
 
 interface ProductDTO {
   id: number | string;
@@ -20,14 +21,7 @@ export default {
       } else {
         Cache.set(stringfyiedBody, stringfyiedBody);
 
-        const products: ProductDTO[] = [];
-
-        if (isArray(body)) {
-          body.forEach((mappedBody: ProductDTO) => {
-            const { id, name } = mappedBody;
-            products.push({ id, name });
-          });
-        }
+        await ProductService.create(body);
 
         res.send('OK');
       }
