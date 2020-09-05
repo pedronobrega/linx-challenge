@@ -4,7 +4,7 @@ import Cache from '../../src/cache/Cache';
 
 const testToken = 'test:';
 
-describe('src/cache/Cache', () => {
+describe('Cache Unit Test', () => {
   it('Should Set Value', () => {
     // Arrange
     const value = 'cache_test1';

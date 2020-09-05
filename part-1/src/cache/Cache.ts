@@ -13,21 +13,26 @@ class Cache {
   }
 
   async get(key: string) {
-    let value = null;
+    let filteredValue = null;
 
-    value = await this.redis.get(key);
+    filteredValue = await this.redis.get(key);
 
-    return value ? JSON.parse(value) : '';
+    return filteredValue ? JSON.parse(filteredValue) : '';
   }
 
-  set(key: string, value: string, secondsToExpire: number) {
-    return this.redis.set(key, value, 'EX', secondsToExpire).then(result => {
-      return result;
-    });
+  async set(key: string, value: string, secondsToExpire: number) {
+    const filteredValue = await this.redis.set(
+      key,
+      value,
+      'EX',
+      secondsToExpire,
+    );
+    return filteredValue;
   }
 
-  del(key: string) {
-    return this.redis.del(key);
+  async del(key: string) {
+    const filteredValue = await this.redis.del(key);
+    return filteredValue;
   }
 }
 
