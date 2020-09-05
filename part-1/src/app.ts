@@ -14,13 +14,17 @@ const HOST = process.env.SERVER_HOST || '0.0.0.0';
 const app = express();
 
 const setupExpress = (setupObject: SetupObject): void => {
-  app.use(cors());
+  app.use(cors({ methods: ['GET, POST'] }));
 
   app.use(
     bodyParser.json({
       limit: '10gb',
     }),
   );
+
+  app.options('*', (req, res) => {
+    res.json({ status: 'Ok' });
+  });
 
   app.use(routes);
 

@@ -1,4 +1,60 @@
-# Parte 1 - API de produtos
+# API de Produtos
+
+## Requisitos
+
+Para rodar essa API localmente, os requerimentos sao:
+
+- node package manager (ex: npm ou yarn)
+- bash
+- docker
+- docker-compose
+
+## Execucao
+
+### Rodar o Servidor
+
+Os comandos abaixo devem ser executado em seu terminal para colocar o servi'co no ar:
+
+```bash
+cd part-1
+bash build.sh
+bash start.sh
+```
+
+### Rodar testes unit'arios
+
+Usando yarn:
+
+```bash
+cd part-1
+yarn
+yarn test
+```
+
+Usando npm:
+
+```bash
+cd part-1
+npm install
+npm run test
+```
+
+## Defini'c~oes
+
+Esta API suporta requisi'c~oes do tipo:
+
+```bash
+GET => http://localhost/ping
+POST => http://localhost/products
+```
+
+Para executar comandos via cURL, 'e preciso especificar o Content-type no header, como abaixo:
+
+```bash
+curl -XPOST -H "Content-Type: application/json" http://localhost/products --data '[{"id": "123", "name": "mesa"},{"id": "124", "name": "cadeira"}]'
+```
+
+## Parte 1 - API de produtos
 
 Precisamos de uma API para receber a atualização de dados cadastrais de produtos. Ela deve receber um corpo no formato JSON, onde o tamanho varia desde alguns poucos Kb até alguns Gb.
 Experiências anteriores mostram que alguns clientes costumam enviar o mesmo corpo repetidas vezes ao longo de um curto espaço de tempo.

@@ -3,7 +3,7 @@
         "build": "rimraf ./build && tsc",
         "start": "node build/server.js",
         "start:dev": "nodemon",
-        "test": "jest --no-cache"
+        "test": "jest --no-cache --passWithNoTests"
     },
     "devDependencies": {
         "@types/cors": "^2.8.7",

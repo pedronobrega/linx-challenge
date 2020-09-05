@@ -21,6 +21,16 @@ export default {
       } else {
         Cache.set(stringfyiedBody, stringfyiedBody);
 
+        try {
+          body.map((product: ProductDTO) => ({
+            id: product.id,
+            name: product.name,
+          }));
+        } catch (error) {
+          console.log(error);
+          res.sendStatus(400);
+        }
+
         await ProductService.create(body);
 
         res.send('OK');
