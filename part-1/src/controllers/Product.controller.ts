@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { isArray } from 'util';
 import Cache from '../cache/Cache';
 import ProductService from '../services/Product.service';
 
@@ -19,7 +18,7 @@ export default {
       if (cached) {
         res.sendStatus(403);
       } else {
-        Cache.set(stringfyiedBody, stringfyiedBody);
+        Cache.set(stringfyiedBody, stringfyiedBody, 600);
 
         try {
           body.map((product: ProductDTO) => ({

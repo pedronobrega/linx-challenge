@@ -20,9 +20,10 @@ class Cache {
     return value ? JSON.parse(value) : '';
   }
 
-  set(key: string, value: string) {
-    const settedValue = this.redis.set(key, value, 'EX', 10 * 60);
-    return settedValue;
+  set(key: string, value: string, secondsToExpire: number) {
+    return this.redis.set(key, value, 'EX', secondsToExpire).then(result => {
+      return result;
+    });
   }
 
   del(key: string) {
