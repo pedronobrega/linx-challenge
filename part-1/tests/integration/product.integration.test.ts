@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import connection from '../../src/database';
 import ProductService from '../../src/services/Product.service';
 
