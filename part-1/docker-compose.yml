@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   postgres:
-    image: 'postgres'
+    image: 'postgres:alpine'
     container_name: 'pedronobrega-postgres'
     restart: 'always'
     ports:
@@ -14,7 +14,7 @@ services:
       POSTGRES_PASSWORD: 'docker'
 
   redis:
-    image: 'redis'
+    image: 'redis:alpine'
     container_name: 'pedronobrega-redis'
     restart: 'always'
     ports:

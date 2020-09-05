@@ -1,4 +1,4 @@
-FROM node
+FROM node:alpine
 
 WORKDIR /node
 
@@ -7,6 +7,8 @@ COPY tsconfig*.json ./
 RUN yarn
 
 COPY . .
+
+RUN rm -rf tests
 
 RUN yarn build
 
