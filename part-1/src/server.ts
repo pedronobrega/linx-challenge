@@ -1,7 +1,14 @@
-import 'dotenv/config';
+/** Global */
+import dotenv from 'dotenv';
 import cluster from 'cluster';
 
+const path = `./.env.${process.env.ENVIRONMENT}`;
+dotenv.config({ path });
+
+/** Modules */
+// eslint-disable-next-line import/first
 import Cluster from './cluster';
+// eslint-disable-next-line import/first
 import Worker from './worker';
 
 // THIS IS NOT THE BETTER WAY TO CLUSTER A NODE SERVER.

@@ -3,15 +3,15 @@ version: '3.1'
 services:
 
   postgres:
-    image: 'postgres:alpine'
+    image: 'postgres'
     container_name: 'pedronobrega-postgres'
     restart: 'always'
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_DB: 'docker'
-      POSTGRES_USER: 'docker'
-      POSTGRES_PASSWORD: 'docker'
+      POSTGRES_DB: docker
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
 
   redis:
     image: 'redis:alpine'
@@ -23,6 +23,8 @@ services:
   node:
     image: 'node-balanced'
     container_name: 'pedronobrega-node'
+    volumes:
+      - .:/node
     restart: 'always'
     ports:
       - '8080:8080'

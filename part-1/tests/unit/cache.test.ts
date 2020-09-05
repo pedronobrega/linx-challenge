@@ -1,4 +1,4 @@
-jest.mock('../src/cache/Cache');
+jest.mock('../../src/cache/Cache');
 // eslint-disable-next-line import/first
 import Cache from '../../src/cache/Cache';
 

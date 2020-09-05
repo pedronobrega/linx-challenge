@@ -26,7 +26,7 @@ class Cluster {
 
   setupClusters = (): void => {
     const numCores =
-      process.env.CLUSTER_REQUIRED || false ? os.cpus().length : 1;
+      Number(process.env.CLUSTER_REQUIRED) || false ? os.cpus().length : 1;
 
     console.log(`Master cluster setting up ${numCores} workers`);
 

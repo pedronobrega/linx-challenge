@@ -12,4 +12,6 @@ docker-compose up -d node
 docker-compose up -d nginx
 
 # Running Migrations
-docker exec -it pedronobrega-node yarn sequelize db:migrate
+docker exec pedronobrega-node yarn sequelize db:migrate
+
+docker-compose up
