@@ -11,6 +11,9 @@ docker-compose up -d node
 # Setting up NGINX
 docker-compose up -d nginx
 
+# Running Node Package Manager
+docker exec pedronobrega-node yarn
+
 # Running Migrations
 docker exec pedronobrega-node yarn sequelize db:migrate
 
