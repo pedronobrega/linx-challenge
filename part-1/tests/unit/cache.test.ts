@@ -3,6 +3,7 @@ jest.mock('../../src/cache/Cache');
 import Cache from '../../src/cache/Cache';
 
 const testToken = 'test:';
+const cacheModel = new Cache();
 
 describe('Cache Unit Test', () => {
   it('Should Set Value', () => {
@@ -11,38 +12,38 @@ describe('Cache Unit Test', () => {
     const key = testToken + value;
 
     // Act
-    Cache.set(key, value, 3);
+    cacheModel.set(key, value, 3);
 
     // Assert
-    expect(Cache.set).toHaveBeenCalledTimes(1);
-    expect(Cache.set).toHaveBeenCalledWith(key, value, 3);
+    expect(cacheModel.set).toHaveBeenCalledTimes(1);
+    expect(cacheModel.set).toHaveBeenCalledWith(key, value, 3);
   });
 
   it('Should Get Value', () => {
     // Arrange
     const expectedValue = 'cache_test2';
     const key = testToken + expectedValue;
-    Cache.set(key, expectedValue, 3);
+    cacheModel.set(key, expectedValue, 3);
 
     // Act
-    Cache.get(key);
+    cacheModel.get(key);
 
     // Assert
-    expect(Cache.get).toHaveBeenCalledTimes(1);
-    expect(Cache.get).toHaveBeenCalledWith(key);
+    expect(cacheModel.get).toHaveBeenCalledTimes(1);
+    expect(cacheModel.get).toHaveBeenCalledWith(key);
   });
 
   it('Should Delete Value', () => {
     // Arrange
     const value = 'cache_test3';
     const key = testToken + value;
-    Cache.set(key, value, 3);
+    cacheModel.set(key, value, 3);
 
     // Act
-    Cache.del(key);
+    cacheModel.del(key);
 
     // Assert
-    expect(Cache.del).toHaveBeenCalledTimes(1);
-    expect(Cache.del).toHaveBeenCalledWith(key);
+    expect(cacheModel.del).toHaveBeenCalledTimes(1);
+    expect(cacheModel.del).toHaveBeenCalledWith(key);
   });
 });

@@ -1,48 +1,45 @@
 import Cache from '../../src/cache/Cache';
 
 const testToken = 'test-integration:';
+const cacheModel = new Cache();
 
 describe('Cache Integration Test', () => {
-  beforeEach(async () => {
-    await Cache.del(`*${testToken}*`);
-  });
-
   it('Should Set Value', async () => {
     // Arrange
-    const value = 'integration:cache:{test:1}';
+    const value = '{test:1}';
     const key = testToken + value;
 
     // Act
-    const result = await Cache.set(key, value, 0.1);
+    const response = await cacheModel.set(key, value, 1);
 
     // Assert
-    expect(result).toStrictEqual('OK');
+    expect(response).toStrictEqual('OK');
   });
 
   it('Should Get Value', async () => {
     // Arrange
-    const expectedValue = 'integration:cache:{test:2}';
+    const expectedValue = '{test:2}';
     const key = testToken + expectedValue;
-    await Cache.set(key, expectedValue, 0.1);
+    await cacheModel.set(key, expectedValue, 1);
 
     // Act
-    const result = await Cache.get(key);
+    const response = await cacheModel.get(key);
 
     // Assert
-    expect(result).toStrictEqual(expectedValue);
+    expect(response).toStrictEqual(expectedValue);
   });
 
   it('Should Delete Value', async () => {
     // Arrange
-    const value = 'integration:cache:{test:3}';
+    const value = '{test:3}';
     const key = testToken + value;
-    await Cache.set(key, value, 0.1);
+    await cacheModel.set(key, value, 1);
 
     // Act
-    await Cache.del(key);
-    const result = await Cache.get(key);
+    await cacheModel.del(key);
+    const response = await cacheModel.get(key);
 
     // Assert
-    expect(result).toBeFalsy();
+    expect(response).toBeFalsy();
   });
 });

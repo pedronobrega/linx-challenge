@@ -7,18 +7,20 @@ interface ProductDTO {
   name: string;
 }
 
+const cacheModel = new Cache();
+
 export default {
   async create(req: Request, res: Response) {
     const body = req.body;
 
     if (body) {
       const stringfyiedBody = JSON.stringify(body);
-      const cached = await Cache.get(stringfyiedBody);
+      const cached = await cacheModel.get(stringfyiedBody);
 
       if (cached) {
         res.sendStatus(403);
       } else {
-        Cache.set(stringfyiedBody, stringfyiedBody, 600);
+        cacheModel.set(stringfyiedBody, stringfyiedBody, 600);
 
         try {
           body.map((product: ProductDTO) => ({

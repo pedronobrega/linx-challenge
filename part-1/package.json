@@ -3,7 +3,7 @@
         "build": "rimraf ./build && tsc",
         "start": "ENVIRONMENT=local node build/server.js",
         "start:dev": "nodemon",
-        "test": "jest --no-cache --passWithNoTests"
+        "test": "ENVIRONMENT=local jest --no-cache --passWithNoTests"
     },
     "devDependencies": {
         "@types/cors": "^2.8.7",
