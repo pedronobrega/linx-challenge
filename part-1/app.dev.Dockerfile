@@ -4,7 +4,7 @@ WORKDIR /node
 
 COPY package*.json ./
 COPY tsconfig*.json ./
-RUN yarn
+RUN yarn add --dev
 
 COPY . .
 
