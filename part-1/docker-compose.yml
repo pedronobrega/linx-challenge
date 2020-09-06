@@ -23,8 +23,6 @@ services:
   node:
     image: 'node-balanced'
     container_name: 'pedronobrega-node'
-    volumes:
-      - .:/node
     restart: 'always'
     ports:
       - '8080:8080'
