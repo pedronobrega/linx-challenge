@@ -12,4 +12,5 @@ docker-compose up -d server
 # Running Migrations
 docker exec pedronobrega-server yarn sequelize db:migrate
 
+# docker-compose up -d worker
 docker-compose up

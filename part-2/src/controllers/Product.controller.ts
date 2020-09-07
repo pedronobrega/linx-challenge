@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-
 import amqp, { Channel, Connection } from 'amqplib/callback_api';
+import formidable from 'formidable';
+import fs from 'fs';
 
 import queueList from '../config/rabbit-queues';
 import ProductDTO from '../utils/interfaces/product.dto';
@@ -11,6 +12,7 @@ const AMQP_PORT = 5672;
 export default class ProductController {
   static async create(req: Request, res: Response): Promise<void> {
     const { body } = req;
+    console.log(body);
     if (body) {
       amqp.connect(
         `amqp://guest:guest@${AMQP_URL}:${AMQP_PORT}`,
@@ -49,5 +51,13 @@ export default class ProductController {
     }
 
     res.send('Ok');
+  }
+
+  static async upload(req: Request, res: Response): Promise<void> {
+    const form = new formidable.IncomingForm();
+    form.parse(req, (error0, fields, files) => {
+      const oldPath = files.filetoupload.path;
+      // const newPath = __dirname
+    });
   }
 }

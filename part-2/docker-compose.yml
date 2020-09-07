@@ -47,10 +47,13 @@ services:
       - 'postgres'
       - 'rabbit'
 
-  # nginx:
-  #   image: 'nginx-balancer'
-  #   container_name: 'pedronobrega-nginx'
+  # tester:
+  #   image: 'node-tester'
+  #   container_name: 'pedronobrega-tester'
+  #   restart: 'always'
   #   ports:
-  #     - '80:80'
+  #     - '8082:8082'
+  #   depends_on:
+  #     - 'postgres'
   #   links:
-  #     - 'node'
+  #     - 'postgres'

@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({ methods: ['GET, POST'] }));
 
 app.use(
-  bodyParser.json({
+  bodyParser({
     limit: '10gb',
   }),
 );

@@ -6,8 +6,11 @@ export default {
   async consumeCreation(payload: any): Promise<ProductDTO | null> {
     try {
       const parsedProduct = JSON.parse(payload);
-      const { productId, images } = parsedProduct;
-      const createdProduct = await ProductService.create({ productId, images });
+      const { productId, images, image } = parsedProduct;
+      const parsedImage = images || [image];
+
+      const product = { productId, images: parsedImage };
+      const createdProduct = await ProductService.create(product);
       return createdProduct;
     } catch (error) {
       console.error(error);
