@@ -2,7 +2,7 @@ import amqp, { Channel } from 'amqplib/callback_api';
 import queueList from './config/rabbit-queues';
 import consumer from './consumer';
 
-const AMQP_URL = 'localhost';
+const AMQP_URL = 'rabbit';
 const AMQP_PORT = 5672;
 
 amqp.connect(

@@ -21,12 +21,25 @@ services:
       - '15672:15672'
       - '5672:5672'
 
-  node:
-    image: 'node-messeger'
-    container_name: 'pedronobrega-node'
+  server:
+    image: 'node-server'
+    container_name: 'pedronobrega-server'
     restart: 'always'
     ports:
       - '8080:8080'
+    depends_on:
+      - 'postgres'
+      - 'rabbit'
+    links:
+      - 'postgres'
+      - 'rabbit'
+
+  worker:
+    image: 'node-worker'
+    container_name: 'pedronobrega-worker'
+    restart: 'always'
+    ports:
+      - '8081:8081'
     depends_on:
       - 'postgres'
       - 'rabbit'

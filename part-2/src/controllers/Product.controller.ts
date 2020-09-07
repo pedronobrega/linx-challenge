@@ -5,7 +5,7 @@ import amqp, { Channel, Connection } from 'amqplib/callback_api';
 import queueList from '../config/rabbit-queues';
 import ProductDTO from '../utils/interfaces/product.dto';
 
-const AMQP_URL = 'localhost';
+const AMQP_URL = 'rabbit';
 const AMQP_PORT = 5672;
 
 export default class ProductController {

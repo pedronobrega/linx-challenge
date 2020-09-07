@@ -4,7 +4,7 @@ import cors from 'cors';
 
 import routes from './routes';
 
-const HOST = 'localhost';
+const HOST = '0.0.0.0';
 const PORT = 8080;
 
 const app = express();
