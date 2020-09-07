@@ -22,9 +22,13 @@ amqp.connect(
 
         console.log(` [*] Waiting for messages in ${queue}`);
 
-        channel.consume(queue, msg => consumer.consume(queue, msg), {
-          noAck: true,
-        });
+        channel.consume(
+          queue,
+          msg => consumer.consume(queue, msg?.content.toString()),
+          {
+            noAck: true,
+          },
+        );
       });
     });
   },

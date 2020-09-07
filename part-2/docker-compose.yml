@@ -15,17 +15,21 @@ services:
 
   rabbit:
     image: 'rabbitmq:3-management'
+    container_name: 'pedronobrega-rabbit'
     restart: 'always'
     ports:
       - '15672:15672'
       - '5672:5672'
 
   node:
-    image: 'node-balanced'
+    image: 'node-messeger'
     container_name: 'pedronobrega-node'
     restart: 'always'
     ports:
       - '8080:8080'
+    depends_on:
+      - 'postgres'
+      - 'rabbit'
     links:
       - 'postgres'
       - 'rabbit'
