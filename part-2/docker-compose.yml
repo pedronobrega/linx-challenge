@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+
+  postgres:
+    image: 'postgres:alpine'
+    container_name: 'pedronobrega-postgres'
+    restart: 'always'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: docker
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+
+  rabbit:
+    image: 'rabbitmq:3-management'
+    restart: 'always'
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+
+  node:
+    image: 'node-balanced'
+    container_name: 'pedronobrega-node'
+    restart: 'always'
+    ports:
+      - '8080:8080'
+    links:
+      - 'postgres'
+      - 'rabbit'
+
+  # nginx:
+  #   image: 'nginx-balancer'
+  #   container_name: 'pedronobrega-nginx'
+  #   ports:
+  #     - '80:80'
+  #   links:
+  #     - 'node'
