@@ -21,7 +21,7 @@
   "exclude": [
     "prettier*",
     "jest*",
-    "src/tests",
-    "build"
+    "tests",
+    "build",
   ]
 }

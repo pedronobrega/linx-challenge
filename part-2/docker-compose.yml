@@ -21,6 +21,13 @@ services:
       - '15672:15672'
       - '5672:5672'
 
+  redis:
+    image: 'redis:alpine'
+    container_name: 'pedronobrega-redis'
+    restart: 'always'
+    ports:
+      - '6379:6379'
+
   server:
     image: 'node-server'
     container_name: 'pedronobrega-server'
@@ -30,9 +37,11 @@ services:
     depends_on:
       - 'postgres'
       - 'rabbit'
+      - 'redis'
     links:
       - 'postgres'
       - 'rabbit'
+      - 'redis'
 
   worker:
     image: 'node-worker'
@@ -43,9 +52,11 @@ services:
     depends_on:
       - 'postgres'
       - 'rabbit'
+      - 'redis'
     links:
       - 'postgres'
       - 'rabbit'
+      - 'redis'
 
   # tester:
   #   image: 'node-tester'

@@ -3,6 +3,9 @@
 # Setting up POSTGRES
 docker-compose up -d postgres
 
+# Setting up REDIS
+docker-compose up -d redis
+
 # Setting up NODE
 docker-compose up -d tester
 

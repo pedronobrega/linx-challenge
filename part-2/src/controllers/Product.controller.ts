@@ -2,12 +2,16 @@ import { Request, Response } from 'express';
 import amqp, { Channel, Connection } from 'amqplib/callback_api';
 import formidable from 'formidable';
 import fs from 'fs';
+import dotenv from 'dotenv';
 
 import queueList from '../config/rabbit-queues';
 import ProductDTO from '../utils/interfaces/product.dto';
 
-const AMQP_URL = 'rabbit';
-const AMQP_PORT = 5672;
+const path = `./.env.${process.env.ENVIRONMENT}`;
+dotenv.config({ path });
+
+const AMQP_URL = process.env.AMQP_URL || 'localhost';
+const AMQP_PORT = Number(process.env.AMQP_PORT) || 5672;
 
 export default class ProductController {
   static async create(req: Request, res: Response): Promise<void> {

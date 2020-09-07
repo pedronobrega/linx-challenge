@@ -1,11 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 import routes from './routes';
 
-const HOST = '0.0.0.0';
-const PORT = 8080;
+const path = `./.env.${process.env.ENVIRONMENT}`;
+dotenv.config({ path });
+
+const HOST = process.env.SERVER_HOST || 'localhost';
+const PORT = Number(process.env.SERVER_PORT) || 8080;
 
 const app = express();
 

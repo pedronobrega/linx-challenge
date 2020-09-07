@@ -1,9 +1,14 @@
 import amqp, { Channel } from 'amqplib/callback_api';
+import dotenv from 'dotenv';
+
 import queueList from './config/rabbit-queues';
 import consumer from './consumer';
 
-const AMQP_URL = 'rabbit';
-const AMQP_PORT = 5672;
+const path = `./.env.${process.env.ENVIRONMENT}`;
+dotenv.config({ path });
+
+const AMQP_URL = process.env.AMQP_URL || 'localhost';
+const AMQP_PORT = Number(process.env.AMQP_PORT) || 5672;
 
 amqp.connect(
   `amqp://guest:guest@${AMQP_URL}:${AMQP_PORT}`,
