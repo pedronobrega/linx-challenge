@@ -4,7 +4,7 @@ WORKDIR /node/test
 
 COPY package*.json ./
 COPY tsconfig*.json ./
-RUN yarn install --production=false
+RUN yarn
 
 COPY . .
 

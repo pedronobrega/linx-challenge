@@ -4,7 +4,7 @@ WORKDIR /node/receiver
 
 COPY package*.json ./
 COPY tsconfig*.json ./
-RUN yarn install --production
+RUN yarn
 
 COPY . .
 

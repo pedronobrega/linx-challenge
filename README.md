@@ -158,3 +158,47 @@ ruby url-aggregator-api.rb
 ```
 
 ## Implementação
+
+#### Execução
+
+##### Rodar o Servidor
+
+Os comandos abaixo devem ser executado em seu terminal para colocar o servi'co no ar:
+
+```bash
+cd part-2
+bash build.sh
+bash start.sh
+```
+
+##### Rodar testes unitários
+
+```bash
+cd part-2
+bash build-test.sh
+bash start-test.sh
+docker exec -it pedronobrega-tester yarn test
+```
+
+Para rodar o teste de requisições rode:
+
+```bash
+cd part-2/tests/integration
+bash test-endpoint-dump-sync.sh >> test-request.txt
+```
+
+#### Definições
+
+Esta API suporta requisiçõoes do tipo:
+
+```bash
+GET => http://localhost:8080/ping
+POST => http://localhost:8080/products
+```
+
+Para executar comandos via cURL, é preciso especificar o Content-type no header, como abaixo:
+
+```bash
+curl -XPOST -H "Content-Type: application/json" http://localhost:8080/products --data '[{"productId": "pid1", "images": ["http://www.linx.com/1.png", "http://www.linx.com/2.png", "http://www.linx.com/7.png"]},{"productId": "pid2", "images": ["http://www.linx.com/3.png", "http://www.linx.com/5.png", "http://www.linx.com/6.png"]}]
+'
+```
