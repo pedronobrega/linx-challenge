@@ -1,3 +1,13 @@
+# Requisitos
+
+Para rodar essas API localmente, os requerimentos são:
+
+- acesso à internet
+- node package manager (ex: npm ou yarn)
+- bash
+- docker
+- docker-compose
+
 # Introdução
 
 O teor deste desafio é bastante voltado a alguns problemas que resolvemos com frequência, e vai nos ajudar a descobrir como você raciocina e quais são suas habilidades.
@@ -26,6 +36,88 @@ part-2/
     src/
     test/
 README.md
+```
+
+## Parte 1 - API de produtos
+
+Precisamos de uma API para receber a atualização de dados cadastrais de produtos. Ela deve receber um corpo no formato JSON, onde o tamanho varia desde alguns poucos Kb até alguns Gb.
+Experiências anteriores mostram que alguns clientes costumam enviar o mesmo corpo repetidas vezes ao longo de um curto espaço de tempo.
+Isso nos causou alguns problemas, como o fato de ter que escalar nossos bancos de dados muito além do necessário afim de aguentar a carga extra desnecessária.
+Para evitar que isto ocorra, precisamos que esta API negue requisições que tem o mesmo corpo num intervalo de 10 minutos.
+
+Aqui está um exemplo do comportamento esperado:
+
+```bash
+# 2018-03-01T13:00:00 - primeira requisição, durante 10 minutos requests com o mesmo corpo serão negadas
+curl -XPOST http://your-api.chaordic.com.br/v1/products -d '[{"id": "123", "name": "mesa"}]' #=> 200 OK
+
+# 2018-03-01T13:09:59 - mesmo corpo que a request anterior.
+curl -XPOST http://your-api.chaordic.com.br/v1/products -d '[{"id": "123", "name": "mesa"}]' #=> 403 Forbidden
+
+# 2018-03-01T13:10:00 - agora a API deve voltar a aceitar o corpo
+curl -XPOST http://your-api.chaordic.com.br/v1/products -d '[{"id": "123", "name": "mesa"}]' #=> 200 OK
+```
+
+Como esta API atenderá milhares de requisições simultâneas, ela precisa funcionar em um cluster.
+É esperado que o comportamento descrito acima se mantenha, independente do nó que receber a requisição.
+
+### Implementação
+
+#### Avisos
+
+Essa API usa o `nginx` para redirecionar as requisções para os workers do node, atualmente o `nginx` está configurado para rodar em até 12 threads, ocupando as portas 8080-8091, caso seja necessário alterar essa quantidade acesso o arquivo `src/config/nginx.conf` e altere as portas na seção `upstream`
+
+#### Execução
+
+##### Rodar o Servidor
+
+Os comandos abaixo devem ser executado em seu terminal para colocar o servi'co no ar:
+
+```bash
+cd part-1
+bash build.sh
+bash start.sh
+```
+
+##### Rodar testes unitários
+
+Você precisará dos containers `postgres` e `redis` rodando para executar os testes de integração:
+
+```bash
+cd part-1
+docker-compose up -d postgres
+docker-compose up -d redis
+```
+
+Usando yarn:
+
+```bash
+cd part-1
+yarn
+yarn test
+```
+
+Para rodar o teste de request deny, basta fazer o seguinte:
+*IMPORTANTE: esse teste irá rodar por dez minutos consecutivos*
+
+```bash
+cd part-1/tests/integration
+bash test-endpoint-request-deny-concistence.sh >> test-deny.txt
+```
+
+#### Definições
+
+Esta API suporta requisiçõoes do tipo:
+
+```bash
+GET => http://localhost/ping
+POST => http://localhost/products
+```
+
+Para executar comandos via cURL, é preciso especificar o Content-type no header, como abaixo:
+
+```bash
+curl -XPOST -H "Content-Type: application/json" http://localhost/products --data '[{"id": "123", "name": "mesa"},{"id": "124", "name": "cadeira"}]'
 ```
 
 ## Parte 2 - Agregador de URLs
@@ -64,3 +156,5 @@ Também criamos uma api que responde as URLs do `input-dump.gz`. Ela é apenas u
 gem install sinatra
 ruby url-aggregator-api.rb
 ```
+
+## Implementação
