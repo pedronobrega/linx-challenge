@@ -58,13 +58,13 @@ services:
       - 'rabbit'
       - 'redis'
 
-  # tester:
-  #   image: 'node-tester'
-  #   container_name: 'pedronobrega-tester'
-  #   restart: 'always'
-  #   ports:
-  #     - '8082:8082'
-  #   depends_on:
-  #     - 'postgres'
-  #   links:
-  #     - 'postgres'
+  tester:
+    image: 'node-tester'
+    container_name: 'pedronobrega-tester'
+    restart: 'always'
+    ports:
+      - '8082:8082'
+    depends_on:
+      - 'postgres'
+    links:
+      - 'postgres'

@@ -1,14 +1,17 @@
+/* eslint-disable import/first */
+jest.mock('axios');
+
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import connection from '../../src/database';
 import ProductService from '../../src/services/Product.service';
 
 describe('Product Integration Test', () => {
-  beforeAll(() => {
-    connection.query('begin');
+  beforeAll(async () => {
+    await connection.query('begin');
   });
 
-  afterAll(() => {
-    connection.query('rollback');
+  afterAll(async () => {
+    await connection.query('rollback');
   });
 
   it('Should Create Product', async () => {
