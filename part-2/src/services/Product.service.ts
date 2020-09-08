@@ -7,8 +7,11 @@ import Cache from '../cache/Cache';
 export default class ProductService {
   static async create(product: ProductDTO): Promise<ProductDTO | null> {
     const validImages = await this.validateCreation(product);
-    if (validImages) {
-      const createdProduct = await Product.create(product);
+    if (validImages.length > 0) {
+      const createdProduct = await Product.create({
+        productId: product.productId,
+        images: validImages,
+      });
       let { productId } = createdProduct;
 
       // Forcing productId to be a number
@@ -16,7 +19,7 @@ export default class ProductService {
 
       return {
         productId,
-        images: validImages,
+        images: createdProduct.images,
       };
     }
 
@@ -26,18 +29,26 @@ export default class ProductService {
   static async validateCreation(product: ProductDTO): Promise<string[]> {
     const cache = new Cache();
     const { images } = product;
-    const filteredImages = images.filter(async image => {
+
+    // eslint-disable-next-line prefer-const
+    let filteredImages: string[] = [];
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const image of images) {
       let isValid = false;
+
+      const array = image.split('/');
+      const imageName = array[array.length - 1];
+
+      // eslint-disable-next-line no-await-in-loop
+      const cachedUrl = await cache.get(`valid-image-url:${imageName}`);
       try {
-        const urlIsValid = await cache.get(`valid-image-url:${image}`);
-        if (urlIsValid === 'false') {
-          const array = image.split('/');
-          const imageName = array[array.length - 1];
+        if (!(cachedUrl === '1')) {
+          // eslint-disable-next-line no-await-in-loop
           const response = await axios.get(
             `http://localhost:4567/images/${imageName}`,
           );
-          isValid = response.status === 200 || response.status === 404;
-          console.log(image);
+          isValid = (response && response.status === 200) || false;
         } else {
           isValid = true;
         }
@@ -46,12 +57,15 @@ export default class ProductService {
         isValid = false;
       }
 
-      if (isValid) {
-        cache.set(`valid-image-url:${image}`, String(isValid), 600);
-      }
+      const cacheValue = String((isValid && 1) || 0);
 
-      return isValid;
-    });
+      // eslint-disable-next-line no-await-in-loop
+      await cache.set(`valid-image-url:${imageName}`, cacheValue, 60);
+
+      if (isValid) {
+        filteredImages.push(image);
+      }
+    }
 
     return filteredImages;
   }
