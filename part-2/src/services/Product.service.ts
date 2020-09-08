@@ -43,11 +43,9 @@ export default class ProductService {
       // eslint-disable-next-line no-await-in-loop
       const cachedUrl = await cache.get(`valid-image-url:${imageName}`);
       try {
-        if (cachedUrl && !(cachedUrl === '1')) {
+        if (cachedUrl.length > 0 && !(cachedUrl === '1')) {
           // eslint-disable-next-line no-await-in-loop
-          const response = await axios.get(
-            `http://localhost:4567/images/${imageName}`,
-          );
+          const response = await axios.get(image);
           isValid = (response && response.status === 200) || false;
         } else {
           isValid = true;
