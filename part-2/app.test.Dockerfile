@@ -4,9 +4,11 @@ WORKDIR /node/test
 
 COPY package*.json ./
 COPY tsconfig*.json ./
-RUN yarn
+RUN yarn install --production=false
 
 COPY . .
+
+RUN yarn build
 
 EXPOSE 8080
 
